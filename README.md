@@ -18,7 +18,13 @@ Generates particles for website backgrounds. View example at http://dfred.me/tes
 At the start of the js files, multiple values can be modified
 ## density
 this changes how many particles are present on the canvass proportional to the area of the canvas.
+## densityErrorMargin
+With no margin, some particles disapear as soon as they get put in. 10% seems to be a good number to prevent it.
 ## lineColor
 this changes the color of lines that form between points.
 ## particleColor
 this changes the color of particles on the canvas (the round things that move).
+## speed
+the max speed the particles can go at in x and y. 
+## scrollEffect
+When enabled, scrolling with a mouse adds momentum to the particles. 
