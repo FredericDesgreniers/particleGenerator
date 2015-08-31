@@ -4,21 +4,34 @@ var context;
 var density = 5000;
 var lineColor = 'white';
 var particleColor = 'yellow';
+var speed=2.5;
+
 var stack;
+
+
+var lastScrollTop = 0;
 
 function Particle(ax, ay) {
     this.x = ax;
     this.y = ay;
-    this.mx = (Math.random() * 2 - 1) / 2;
-    this.my = (Math.random() * 2 - 1) / 2;
+    this.mx = (Math.random() * (speed + speed)-speed) / 2;
+    this.my = (Math.random() * (speed + speed)-speed) / 2;
     this.update = function () {
+        if(this.mx>speed)this.my-=0.5;
+        if(this.my<-speed)this.my+=0.5;
         this.x = this.x + this.mx;
         this.y = this.y + this.my;
-
-        if (this.y < 0) this.my = -this.my;
-        if (this.x < 0) this.mx = -this.mx;
-        if (this.x > canvas.width) this.mx = -this.mx;
-        if (this.y > canvas.height) this.my = -this.my;
+        if(this.mx<0.2 && this.mx>-0.2)this.mx=(Math.random() * (speed + speed)-speed) / 2;
+        if(this.my<0.2 && this.my>-0.2)this.my=(Math.random() * (speed + speed)-speed) / 2;
+        if (this.y < 0) this.my = -this.my*(Math.random()+0.2)*1.5;
+        if (this.x < 0) this.mx = -this.mx*(Math.random()+0.2)*1.5;
+        if (this.x > canvas.width) this.mx = -this.mx*(Math.random()+0.2)*1.5;
+        if (this.y > canvas.height) this.my = -this.my*(Math.random()+0.2)*1.5;
+    }
+    this.addMomentum=function(mx1,my1)
+    {
+        this.mx+=mx1;
+        this.my+=my1
     }
 }
 
@@ -37,26 +50,28 @@ function resizeCanvas() {
 
             }
         }
-        checkDensity();
     }
 }
 
 function checkDensity() {
     area = canvas.height * canvas.width;
 
-    while ((area / stack.length) < density) {
+    if ((area / stack.length) < density-500) {
         stack.pop();
 
     }
-    while ((area / stack.length) > density) {
+    if ((area / stack.length) > density+500) {
         stack.push(new Particle(Math.random() * canvas.width, Math.random() * canvas.height));
     }
+     var loopTimer = setTimeout('checkDensity()', 20);
 }
 
 
 function draw() {
     context.clearRect(0, 0, canvas.width, canvas.height);
+    
     stack.forEach(drawParticle);
+    
     var loopTimer = setTimeout('draw()', 20);
 }
 
@@ -77,7 +92,14 @@ function drawParticle(p1, index, array) {
         }
     }
 }
-
+function MouseWheelHandler(e)
+{
+    	var delta = Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail)));
+    for(i=0;i<stack.length;i++)
+    {
+        stack[i].addMomentum(0,Math.random()*delta/2)  ;
+    }
+}
 function iniBackgroundParticles() {
     canvas = document.getElementById('space');
     window.addEventListener('resize', resizeCanvas, false);
@@ -86,7 +108,10 @@ function iniBackgroundParticles() {
     stack = new Array();
     resizeCanvas();
     if (context) {
-
+        window.addEventListener("mousewheel", MouseWheelHandler, false);
         window.requestAnimationFrame(draw);
+        checkDensity();
     }
+    
+
 }
