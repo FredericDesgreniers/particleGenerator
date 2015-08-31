@@ -18,7 +18,9 @@ function Particle(ax, ay) {
     this.mx = (Math.random() * (speed + speed)-speed) / 2;
     this.my = (Math.random() * (speed + speed)-speed) / 2;
     this.update = function () {
-        if(this.mx>speed)this.my-=0.5;
+        if(this.mx>speed)this.mx-=0.5;
+        if(this.mx<-speed)this.mx+=0.5;
+        if(this.my>speed)this.my-=0.5;
         if(this.my<-speed)this.my+=0.5;
         this.x = this.x + this.mx;
         this.y = this.y + this.my;
