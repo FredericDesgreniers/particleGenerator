@@ -5,6 +5,7 @@ var density = 5000;
 var lineColor = 'white';
 var particleColor = 'yellow';
 var speed=2.5;
+var scrollEffect=false;
 
 var stack;
 
@@ -94,10 +95,13 @@ function drawParticle(p1, index, array) {
 }
 function MouseWheelHandler(e)
 {
+    if(scrollEffect)
+    {
     	var delta = Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail)));
     for(i=0;i<stack.length;i++)
     {
         stack[i].addMomentum(0,Math.random()*delta/2)  ;
+    }
     }
 }
 function iniBackgroundParticles() {
