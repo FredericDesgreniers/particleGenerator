@@ -82,7 +82,6 @@ function iniBackgroundParticles() {
     canvas = document.getElementById('space');
     window.addEventListener('resize', resizeCanvas, false);
     context = canvas.getContext('2d');
-    alert("dsad");
 
     stack = new Array();
     resizeCanvas();
