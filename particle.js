@@ -1,12 +1,15 @@
 var canvas;
 var context;
 //VALUES
-var density = 5000;
-var lineColor = 'white';
+var density = 10000;
+var densityErrorMargin=0.1; //percent error to make the annoying ghost particles disapear.
+var lineColor_R=255;
+var lineColor_G=255;
+var lineColor_B=255;
 var particleColor = 'yellow';
-var speed=2.5;
+var speed=2;
 var scrollEffect=false;
-
+var lineDistance=150;
 var stack;
 
 
@@ -22,8 +25,10 @@ function Particle(ax, ay) {
         if(this.mx<-speed)this.mx+=0.5;
         if(this.my>speed)this.my-=0.5;
         if(this.my<-speed)this.my+=0.5;
+        
         this.x = this.x + this.mx;
         this.y = this.y + this.my;
+        
         if(this.mx<0.2 && this.mx>-0.2)this.mx=(Math.random() * (speed + speed)-speed) / 2;
         if(this.my<0.2 && this.my>-0.2)this.my=(Math.random() * (speed + speed)-speed) / 2;
         if (this.y < 0) this.my = -this.my*(Math.random()+0.2)*1.5;
@@ -42,7 +47,7 @@ function resizeCanvas() {
 
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
-    context.strokeStyle = lineColor;
+
     context.fillStyle = particleColor;
     if (typeof stack !== 'undefined') {
         for (i = 0; i < stack.length; i++) {
@@ -59,11 +64,11 @@ function resizeCanvas() {
 function checkDensity() {
     area = canvas.height * canvas.width;
 
-    if ((area / stack.length) < density-500) {
+    if ((area / stack.length) < density-(density*densityErrorMargin)) {
         stack.pop();
 
     }
-    if ((area / stack.length) > density+500) {
+    if ((area / stack.length) > density+(density*densityErrorMargin)) {
         stack.push(new Particle(Math.random() * canvas.width, Math.random() * canvas.height));
     }
      var loopTimer = setTimeout('checkDensity()', 20);
@@ -87,8 +92,13 @@ function drawParticle(p1, index, array) {
 
     for (i = index; i < array.length; i++) {
         p2 = array[i];
-        if (Math.sqrt(Math.pow(p2.x - p1.x, 2) + Math.pow(p2.y - p1.y, 2)) < 30) {
+        dist=Math.sqrt(Math.pow(p2.x - p1.x, 2) + Math.pow(p2.y - p1.y, 2)) ;
+        if (dist < lineDistance)      {
+            opa=1-(dist/lineDistance);
+           
+            
             context.beginPath();
+             context.strokeStyle = "rgba("+lineColor_R+","+lineColor_R+","+lineColor_R+","+opa+")";
             context.moveTo(p1.x, p1.y);
             context.lineTo(p2.x, p2.y);
             context.stroke();
