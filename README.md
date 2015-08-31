@@ -11,7 +11,9 @@ Generates particles for website backgrounds. View example at http://dfred.me
         <script src="particle.js"></script>`
 3. Add the css file to the header.
 4. Call the iniBackgroundParticles() method when your sure the canvas is loaded and modify the javascript file for your needs
+5. 
 ### Adding a overlay with opacity and/or blur makes for a really cool background. 
+
 # Values
 At the start of the js files, multiple values can be modified
 ## density
