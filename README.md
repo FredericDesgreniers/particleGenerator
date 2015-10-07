@@ -1,5 +1,5 @@
 # particleGenerator
-Generates particles for website backgrounds. View example at http://dfred.me/test/particleBackground/particles.html
+Generates particles for website backgrounds.
 
 # Look at particles.html for an simple example of how to implement this.
 # How to use:
